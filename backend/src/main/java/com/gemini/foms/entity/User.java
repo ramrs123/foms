@@ -1,6 +1,6 @@
 package com.gemini.foms.entity;
 
-import com.gemini.foms.entity.enums.Role;
+import com.gemini.foms.entity.enums.user.Role;
 
 public class User {
     private int userId;

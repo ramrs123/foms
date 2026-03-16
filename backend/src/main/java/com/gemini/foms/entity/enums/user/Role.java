@@ -1,4 +1,4 @@
-package com.gemini.foms.entity.enums;
+package com.gemini.foms.entity.enums.user;
 
 public enum Role {
     ADMIN,
