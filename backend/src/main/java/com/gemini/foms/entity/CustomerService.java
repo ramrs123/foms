@@ -2,10 +2,15 @@ package com.gemini.foms.entity;
 
 import com.gemini.foms.entity.enums.customerservice.Service;
 import com.gemini.foms.entity.enums.customerservice.ServiceStatus;
+import jakarta.persistence.*;
 
 import java.time.Instant;
 
+@Entity
+@Table(name = "customer_services")
 public class CustomerService {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int serviceId;
     private String customerName;
     private String checkedInRoom;
