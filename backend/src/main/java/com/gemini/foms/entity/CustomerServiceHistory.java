@@ -8,7 +8,7 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "customer_services")
-public class CustomerService {
+public class CustomerServiceHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int serviceId;
@@ -21,9 +21,9 @@ public class CustomerService {
     private Instant updatedAt;
     private String remarks;
 
-    protected CustomerService(){};
+    protected CustomerServiceHistory(){};
 
-    public CustomerService(String customerName, String checkedInRoom, Service service, ServiceStatus status) {
+    public CustomerServiceHistory(String customerName, String checkedInRoom, Service service, ServiceStatus status) {
         this.customerName = customerName;
         this.checkedInRoom = checkedInRoom;
         this.service = service;
