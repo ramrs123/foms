@@ -13,6 +13,8 @@ public class User {
     private String employeeId;
     private String password;
     private String employeeName;
+
+    @Enumerated(EnumType.STRING)
     private Role role;
     private boolean isActive = false;
 

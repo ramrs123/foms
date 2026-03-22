@@ -14,22 +14,27 @@ public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int appointmentId;
-    private String customerId;
-    private String customerName;
+
+    @ManyToOne
+    @JoinColumn(name = "customerId")
+    private Customer customer;
+
     private LocalDate appointmentDate;
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
     private User staffAssigned;
+
     private Instant appointmentBookedAt;
+    @Enumerated(EnumType.STRING)
     private AppointmentStatus appointmentStatus;
     private String remarks;
 
     protected Appointment() {
-    }
+    };
 
-    ;
-
-    public Appointment(String customerId, String customerName, User staffAssigned, AppointmentStatus appoointmentStatus) {
-        this.customerId = customerId;
-        this.customerName = customerName;
+    public Appointment(Customer customer, User staffAssigned, AppointmentStatus appoointmentStatus) {
+        this.customer = customer;
         this.staffAssigned = staffAssigned;
         this.appointmentStatus = AppointmentStatus.CREATED;
     }
@@ -88,8 +93,7 @@ public class Appointment {
     public String toString() {
         return "Appointment{" +
                 "appointmentId=" + appointmentId +
-                ", customerId='" + customerId + '\'' +
-                ", customerName='" + customerName + '\'' +
+                ", customer=" + customer +
                 ", appointmentDate=" + appointmentDate +
                 ", staffAssigned=" + staffAssigned +
                 ", appointmentBookedAt=" + appointmentBookedAt +
@@ -97,5 +101,4 @@ public class Appointment {
                 ", remarks='" + remarks + '\'' +
                 '}';
     }
-
 }

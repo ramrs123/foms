@@ -37,4 +37,18 @@ public class Customer {
         checkOutTime = Instant.now();
     }
 
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "customerId=" + customerId +
+                ", customerName='" + customerName + '\'' +
+                ", customerPhone='" + customerPhone + '\'' +
+                ", aadharNumber='" + aadharNumber + '\'' +
+                ", customerEmail='" + customerEmail + '\'' +
+                ", checkedInRoom='" + checkedInRoom + '\'' +
+                ", dateOfRegister=" + dateOfRegister +
+                ", checkInTime=" + checkInTime +
+                ", checkOutTime=" + checkOutTime +
+                '}';
+    }
 }

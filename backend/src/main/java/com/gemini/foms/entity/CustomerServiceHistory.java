@@ -14,9 +14,17 @@ public class CustomerServiceHistory {
     private int serviceId;
     private String customerName;
     private String checkedInRoom;
+
+    @Enumerated(EnumType.STRING)
     private Service service;
+
+    @OneToOne
+    @JoinColumn(name = "userId")
     private User assignedStaff;
+
+    @Enumerated(EnumType.STRING)
     private ServiceStatus status;
+
     private Instant createdAt;
     private Instant updatedAt;
     private String remarks;
