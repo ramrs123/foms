@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rooms</title>
+</head>
+<body>
+
+<h2>Add Room</h2>
+
+<input type="text" id="number" placeholder="Room Number">
+<input type="text" id="type" placeholder="Type">
+<button onclick="addRoom()">Add</button>
+
+<h2>All Rooms</h2>
+<ul id="list"></ul>
+
+<script>
+    const BASE_URL = "http://localhost:8085";
+
+    function addRoom() {
+        fetch(BASE_URL + "/rooms", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                roomNumber: document.getElementById("number").value,
+                type: document.getElementById("type").value
+            })
+        }).then(() => loadRooms());
+    }
+
+    function loadRooms() {
+        fetch(BASE_URL + "/rooms")
+            .then(res => res.json())
+            .then(data => {
+                const list = document.getElementById("list");
+                list.innerHTML = "";
+                data.forEach(r => {
+                    const li = document.createElement("li");
+                    li.textContent = r.id + " - Room " + r.roomNumber + " (" + r.type + ") Available: " + r.available;
+                    list.appendChild(li);
+                });
+            });
+    }
+
+    loadRooms();
+</script>
+
+</body>
+</html>

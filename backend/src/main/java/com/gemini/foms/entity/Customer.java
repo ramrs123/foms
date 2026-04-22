@@ -6,49 +6,36 @@ import java.time.LocalDate;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "customers")
 public class Customer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int customerId;
-    private final String customerName;
-    private String customerPhone;
-    private final String aadharNumber;
-    private String customerEmail;
-    private String checkedInRoom;
-    private LocalDate dateOfRegister;
-    private Instant checkInTime;
-    private Instant checkOutTime;
+    private Long id;
 
-    public Customer(String customerName, String customerPhone, String aadharNumber, String customerEmail, String checkedInRoom, LocalDate dateOfRegister) {
-        this.customerName = customerName;
-        this.customerPhone = customerPhone;
-        this.aadharNumber = aadharNumber;
-        this.customerEmail = customerEmail;
-        this.checkedInRoom = checkedInRoom;
-        this.dateOfRegister = LocalDate.now();
-    }
-    // Executed before customer row is inserted into the table
-    private void onCheckIn(){
-        checkInTime = Instant.now();
+    private String name;
+    private String phone;
+
+    // getters/setters
+
+    public Long getId() {
+        return id;
     }
 
-    private void onCheckOut(){
-        checkOutTime = Instant.now();
+    public String getName() {
+        return name;
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "customerId=" + customerId +
-                ", customerName='" + customerName + '\'' +
-                ", customerPhone='" + customerPhone + '\'' +
-                ", aadharNumber='" + aadharNumber + '\'' +
-                ", customerEmail='" + customerEmail + '\'' +
-                ", checkedInRoom='" + checkedInRoom + '\'' +
-                ", dateOfRegister=" + dateOfRegister +
-                ", checkInTime=" + checkInTime +
-                ", checkOutTime=" + checkOutTime +
-                '}';
+    public void setName(String name) {
+        this.name = name;
     }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+
 }

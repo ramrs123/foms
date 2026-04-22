@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bookings</title>
+</head>
+<body>
+
+<h2>Check-In</h2>
+<input type="number" id="customerId" placeholder="Customer ID">
+<button onclick="checkIn()">Check In</button>
+
+<h2>Check-Out</h2>
+<input type="number" id="bookingId" placeholder="Booking ID">
+<button onclick="checkOut()">Check Out</button>
+
+<h2>All Bookings</h2>
+<ul id="list"></ul>
+
+<script>
+    const BASE_URL = "http://localhost:8085";
+
+    function checkIn() {
+        const id = document.getElementById("customerId").value;
+        fetch(BASE_URL + "/bookings/checkin/" + id, {
+            method: "POST"
+        }).then(() => loadBookings());
+    }
+
+    function checkOut() {
+        const id = document.getElementById("bookingId").value;
+        fetch(BASE_URL + "/bookings/checkout/" + id, {
+            method: "POST"
+        }).then(() => loadBookings());
+    }
+
+    function loadBookings() {
+        fetch(BASE_URL + "/bookings")
+            .then(res => res.json())
+            .then(data => {
+                const list = document.getElementById("list");
+                list.innerHTML = "";
+                data.forEach(b => {
+                    const li = document.createElement("li");
+                    li.textContent = "Booking " + b.id +
+                        " | Customer: " + b.customerId +
+                        " | Room: " + b.roomId +
+                        " | Status: " + b.status;
+                    list.appendChild(li);
+                });
+            });
+    }
+
+    loadBookings();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customers</title>
+</head>
+<body>
+
+<h2>Add Customer</h2>
+
+<input type="text" id="name" placeholder="Name">
+<input type="text" id="phone" placeholder="Phone">
+<button onclick="addCustomer()">Add</button>
+
+<h2>All Customers</h2>
+<ul id="list"></ul>
+
+<script>
+    const BASE_URL = "http://localhost:8085";
+
+    function addCustomer() {
+        fetch(BASE_URL + "/customers", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                name: document.getElementById("name").value,
+                phone: document.getElementById("phone").value
+            })
+        }).then(() => loadCustomers());
+    }
+
+    function loadCustomers() {
+        fetch(BASE_URL + "/customers")
+            .then(res => res.json())
+            .then(data => {
+                const list = document.getElementById("list");
+                list.innerHTML = "";
+                data.forEach(c => {
+                    const li = document.createElement("li");
+                    li.textContent = c.id + " - " + c.name + " (" + c.phone + ")";
+                    list.appendChild(li);
+                });
+            });
+    }
+
+    loadCustomers();
+</script>
+
+</body>
+</html>
