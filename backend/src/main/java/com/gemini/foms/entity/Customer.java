@@ -1,19 +1,33 @@
 package com.gemini.foms.entity;
 
-import java.time.Instant;
-import java.time.LocalDate;
-
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 
 @Entity
+@Table(name="customers")
 public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message="Name is required")
+    @Size(min=2,max=50)
+    @Pattern(regexp="^[A-Za-z ]+$",
+            message="Name should contain only alphabets")
     private String name;
+
+    @NotBlank(message="Phone is required")
+    @Pattern(regexp="^[6-9]\\d{9}$",
+            message="Invalid phone number")
+    @Column(unique=true)
     private String phone;
+
+
+
 
     // getters/setters
 

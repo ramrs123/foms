@@ -1,32 +1,45 @@
 package com.gemini.foms.service;
 
 import com.gemini.foms.entity.Room;
+import com.gemini.foms.exception.DuplicateRoomException;
 import com.gemini.foms.repository.RoomRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class RoomService {
 
-    @Autowired
-    private RoomRepository repo;
+    private final RoomRepository roomRepository;
 
-    public Room create(Room room) {
-        if(repo.findByRoomNumber(room.getRoomNumber()) == null ) {
-            room.setAvailable(true);
-            return repo.save(room);
-        }else{
-            throw new RuntimeException("Room already exists.");
+    public RoomService(RoomRepository roomRepository) {
+
+        this.roomRepository = roomRepository;
+    }
+
+    public Room create(Room room){
+
+        room.setRoomNo(room.getRoomNo().trim());
+
+        if(roomRepository.existsByRoomNo(room.getRoomNo())){
+
+            throw new DuplicateRoomException(
+                    "Room already exists.");
+
         }
+
+        room.setAvailable(true);
+
+        return roomRepository.save(room);
+
     }
 
-    public List<Room> getAvailableRooms() {
-        return repo.findByAvailableTrue();
+    public List<Room> getAll(){
+
+        return roomRepository.findAll();
+
+    }
+    public List<Room> getAvailableRooms(){
+        return roomRepository.findByAvailableTrue();
     }
 
-    public List<Room> getAll() {
-        return repo.findAll();
-    }
 }

@@ -2,7 +2,9 @@ package com.gemini.foms.controller;
 
 import com.gemini.foms.entity.Customer;
 import com.gemini.foms.service.CustomerService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +18,13 @@ public class CustomerController {
     private CustomerService service;
 
     @PostMapping
-    public Customer create(@RequestBody Customer c) {
-        return service.create(c);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Customer create(
+            @Valid
+            @RequestBody Customer customer){
+
+        return service.create(customer);
+
     }
 
     @GetMapping

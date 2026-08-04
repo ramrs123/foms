@@ -1,26 +1,43 @@
 package com.gemini.foms.service;
 
 import com.gemini.foms.entity.Customer;
+import com.gemini.foms.exception.DuplicateCustomerException;
 import com.gemini.foms.repository.CustomerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class CustomerService {
 
-    @Autowired
-    private CustomerRepository repo;
+    private final CustomerRepository customerRepository;
 
-    public Customer create(Customer c) {
-        return repo.save(c);
+    public CustomerService(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
+
+    public Customer create(Customer customer) {
+
+        customer.setName(customer.getName().trim());
+        customer.setPhone(customer.getPhone().trim());
+
+        if(customerRepository.existsByPhone(customer.getPhone())) {
+            throw new DuplicateCustomerException(
+                    "Phone number already exists.");
+        }
+
+        return customerRepository.save(customer);
     }
 
     public List<Customer> getAll() {
-        return repo.findAll();
+        return customerRepository.findAll();
     }
+
+    public Customer getById(Long id) {
+
+        return customerRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Customer not found."));
+    }
+
 }

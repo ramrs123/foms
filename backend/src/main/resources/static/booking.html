@@ -23,17 +23,28 @@
         const id = document.getElementById("customerId").value;
         fetch(BASE_URL + "/bookings/checkin/" + id, {
             method: "POST"
-        }).then(() => loadBookings());
+        }).then(res => handleResponse(res)).then(() => loadBookings());
     }
 
     function checkOut() {
         const id = document.getElementById("bookingId").value;
         fetch(BASE_URL + "/bookings/checkout/" + id, {
             method: "POST"
-        }).then(() => loadBookings());
+        }).then(res => handleResponse(res)).then(() => loadBookings());
+    }
+
+    function handleResponse(res) {
+        if (!res.ok) {
+            return res.text().then(msg => {
+                alert("Error: " + msg);
+                throw new Error(msg);
+            });
+        }
+        return res;
     }
 
     function loadBookings() {
+
         fetch(BASE_URL + "/bookings")
             .then(res => res.json())
             .then(data => {
@@ -41,10 +52,12 @@
                 list.innerHTML = "";
                 data.forEach(b => {
                     const li = document.createElement("li");
-                    li.textContent = "Booking " + b.id +
-                        " | Customer: " + b.customerId +
-                        " | Room: " + b.roomId +
-                        " | Status: " + b.status;
+                    li.textContent =
+                        "Booking " + b.bookingId +
+                        " | Customer: " + b.customer.name +
+                        " | Room: " + (b.room ? b.room.roomNo : "Not Assigned") +
+                        " | Status: " + (b.active ? "CHECKED IN" : "CHECKED OUT");
+
                     list.appendChild(li);
                 });
             });

@@ -2,7 +2,9 @@ package com.gemini.foms.controller;
 
 import com.gemini.foms.entity.Room;
 import com.gemini.foms.service.RoomService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,20 +15,25 @@ import java.util.List;
 public class RoomController {
 
     @Autowired
-    private RoomService service;
+    private RoomService roomService;
 
     @PostMapping
-    public Room create(@RequestBody Room room) {
-        return service.create(room);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Room create(
+            @Valid
+            @RequestBody Room room){
+
+        return roomService.create(room);
+
     }
 
     @GetMapping
     public List<Room> getAll() {
-        return service.getAll();
+        return roomService.getAll();
     }
 
     @GetMapping("/available")
     public List<Room> available() {
-        return service.getAvailableRooms();
+        return roomService.getAvailableRooms();
     }
 }

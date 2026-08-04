@@ -8,7 +8,7 @@
 <h2>Add Room</h2>
 
 <input type="text" id="number" placeholder="Room Number">
-<input type="text" id="type" placeholder="Type">
+
 <button onclick="addRoom()">Add</button>
 
 <h2>All Rooms</h2>
@@ -22,10 +22,20 @@
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                roomNumber: document.getElementById("number").value,
-                type: document.getElementById("type").value
+                roomNo: document.getElementById("number").value,
+
             })
-        }).then(() => loadRooms());
+        }).then(res => handleResponse(res)).then(() => loadRooms());
+    }
+
+    function handleResponse(res) {
+        if (!res.ok) {
+            return res.text().then(msg => {
+                alert("Error: " + msg);
+                throw new Error(msg);
+            });
+        }
+        return res;
     }
 
     function loadRooms() {
@@ -36,7 +46,7 @@
                 list.innerHTML = "";
                 data.forEach(r => {
                     const li = document.createElement("li");
-                    li.textContent = r.id + " - Room " + r.roomNumber + " (" + r.type + ") Available: " + r.available;
+                    li.textContent = r.id + " - Room " + r.roomNo + " Available: " + r.available;
                     list.appendChild(li);
                 });
             });
